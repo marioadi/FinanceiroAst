@@ -436,7 +436,7 @@ if (isset($_SESSION['id_user']) && !empty($_SESSION['id_user']) ) {
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>ID boleto</th>
+                  <!--<th>ID boleto</th>-->
                   <th>Valor</th>
                   <th>Cliente</th>
                   <th>Nosso Numero</th>
@@ -448,10 +448,10 @@ if (isset($_SESSION['id_user']) && !empty($_SESSION['id_user']) ) {
                 </thead>
                 <tbody>
                 <?php
-                  $sql = $pdo->query("SELECT * FROM boletos WHERE Status IN ('Vencido','Pago','No Prazo')");
+                  $sql = $pdo->query("SELECT * FROM boletos WHERE Status IN ('Vencido','Pago','No Prazo') ORDER BY Status DESC, Vencimento ASC, Cliente ASC");
                   if($sql->rowCount() > 0){
                     foreach ($sql->fetchAll() as $ln) {
-                      $ID = $ln['ID_boleto'];
+                      //$ID = $ln['ID_boleto'];
                       $valor = $ln['Valor'];
                       $cliente = $ln['Cliente'];
                       $nosso_num = $ln['Nosso_num'];
@@ -461,8 +461,8 @@ if (isset($_SESSION['id_user']) && !empty($_SESSION['id_user']) ) {
                       $obs = $ln['Obs'];    
                 ?>
                     <tr>
-                      <td><?php echo $ID; ?></td>
-                      <td>R$ <?php echo $valor; ?></td>
+                      <!--<td><?php //echo $ID; ?></td>-->
+					  <td>R$ <?php echo $valor; ?></td>
                       <td><?php echo $cliente; ?></td>
                       <td><?php echo $nosso_num; ?></td>
                       <td><?php echo date("d-m-Y", strtotime($data_en)); ?></td>
@@ -475,7 +475,7 @@ if (isset($_SESSION['id_user']) && !empty($_SESSION['id_user']) ) {
                         <?php else: ?>
                           <?php echo $status; ?>
                         <?php endif; ?>  
-                       </td>
+                      </td>
                       <td><?php echo $obs; ?></td>
                     </tr>
                 <?php
@@ -485,7 +485,7 @@ if (isset($_SESSION['id_user']) && !empty($_SESSION['id_user']) ) {
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>ID boleto</th>
+                  <!--<th>ID boleto</th>-->
                   <th>Valor</th>
                   <th>Cliente</th>
                   <th>Nosso Numero</th>
@@ -572,17 +572,17 @@ if (isset($_SESSION['id_user']) && !empty($_SESSION['id_user']) ) {
 <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
 <script>
-  $(function () {
-    $('#example1').DataTable()
-    $('#example2').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    })
-  })
+  $(document).ready(function() {
+		$('#example1').DataTable( {
+		  'paging'    : true,
+		  'lengthChange': true,
+		  'searching'   : true,
+		  'ordering'    : false,
+		  'info'        : true,
+		  'autoWidth'   : false,
+		} );		
+	} );
+	
 </script>
 
 </body>
