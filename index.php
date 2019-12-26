@@ -40,20 +40,22 @@ session_start();
     $usuario = addslashes($_POST['usuario']);
     $senha = md5(addslashes($_POST['senha']));
 
-    $sql = "SELECT id_user, user, password FROM users WHERE user = '".$usuario."'";
+    $sql = "SELECT id, nome, senha FROM users WHERE nome = '".$usuario."'";
     $sql = $pdo->query($sql);
 
-      if($sql->rowCount() > 0){
-        // Definindo msg de possivéis erros
-        $message_error_login = "Usuario ou senha inválido!";
-        define("ERRO_LOGIN", $message_error_login);
+    // Definindo msg de possivéis erros
+    $message_error_login = "Usuario ou senha inválido!";
+    define("ERRO_LOGIN", $message_error_login);
 
+      if($sql->rowCount() > 0){        
         $ln = $sql->fetch();
-        $id_user_db = $ln['id_user'];
-        $user_db = $ln['user'];
-        $pass_db = $ln['password'];
+        $id_user_db = $ln['id'];
+        echo "ID: ".$id_user_db;
+        $user_db = $ln['nome'];
+        $pass_db = $ln['senha'];
         if(isset($_POST['usuario']) && isset($_POST['senha'])){
-          if($usuario == $user_db && $senha == $pass_db){
+          
+          if(($usuario == $user_db) && ($senha == $pass_db)){
             $_SESSION['id_user'] = $id_user_db;
             header("Location: painel.php");
             exit;
